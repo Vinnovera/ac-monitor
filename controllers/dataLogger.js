@@ -29,7 +29,6 @@ module.exports = new function() {
 
 		timer = setInterval(function() {
 				temperatures.getCurrent(function(temperatures) {
-					console.log(temperatures.inside);
 					priv.log(temperatures);
 					priv.checkAlarms(temperatures);
 				})
