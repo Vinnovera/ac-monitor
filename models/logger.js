@@ -5,6 +5,8 @@ module.exports = function(id) {
 		GoogleSpreadsheet   = require('google-spreadsheet'),
 		dataSheet           = new GoogleSpreadsheet('0AgcfCX32-QOidGNCUU93aUJJeFBsTHMtY01ZaXN0WGc'),
 
+		username    = 'acmonitortuna@gmail.com',
+		password    = 'tunamonitor',
 		isLoggedIn  = false,
 
 		maxEntries  = 2016; // 7 days at 5 minute interval
@@ -42,7 +44,7 @@ module.exports = function(id) {
 	priv.logIn = function(callback) {
 		callback = callback || function () {};
 		if(!isLoggedIn) {
-			dataSheet.setAuth( 'acmonitortuna@gmail.com','tunamonitor', function(err){
+			dataSheet.setAuth( username, password, function(err){
 				if (err) console.log(err);
 
 				isLoggedIn = true;
