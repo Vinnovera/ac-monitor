@@ -18,7 +18,7 @@ module.exports = new function() {
 
 		alarmSubject    = 'Temperaturalarm - Tuna',
 		alarmEmails     = ['jakob@vinnovera.se'],
-		alarms          = [5,15,21.5],
+		alarms          = [5,15],
 		lastAlarm       = 0;
 
 
