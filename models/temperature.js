@@ -35,6 +35,5 @@ module.exports = function(id) {
 				publ.read(callback);
 			}
 		});
-		/*callback(Math.random()*100);*/
 	}
 };
