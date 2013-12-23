@@ -2,24 +2,29 @@ module.exports = new function() {
 	var publ    = this,
 		priv    = {},
 
+        config          = require(process.cwd() + '/config.js'),
+
 		fs              = require('fs'),
 		moment          = require('moment'),
 		temperatures    = require(process.cwd() + '/facades/temperatures.js'),
 		Logger          = require(process.cwd() + '/models/logger.js'),
-		logger          = new Logger,
 		Mailer          = require(process.cwd() + '/models/mailer.js'),
+		logger          = new Logger,
 		mailer          = new Mailer,
-		handlebars      = require('handlebars'),
 
-		mailTemplate    = handlebars.compile(fs.readFileSync(process.cwd() + '/views/alarmMail.html', 'utf8')),
-
-		interval        = 300000, // 5 minute interval
+		interval        = config.pollIntervall,
 		timer           = null,
 
-		alarmSubject    = 'Temperaturalarm - Tuna',
-		alarmEmails     = ['jakob@vinnovera.se'],
-		alarms          = [5,15],
-		lastAlarm       = 0;
+		alarmSubject    = config.texts.alarmSubject,
+		alarmMessage    = config.texts.alarmMessage,
+		
+		alarmEmails     = config.alarms.emailRecipients.join(','),
+		alarmFrom       = config.alarms.emailFrom,
+		alarms          = config.alarms.steps,
+		lastAlarm       = 0,
+		
+		handlebars      = require('handlebars'),
+		mailTemplate    = handlebars.compile(alarmMessage);
 
 
 	publ.start = function() {
@@ -73,7 +78,8 @@ module.exports = new function() {
 
 	priv.mail = function(data) {
 		mailer.send({
-			to:         alarmEmails.join(','),
+            from:       alarmFrom,
+			to:         alarmEmails,
 			subject:    alarmSubject,
 			html:       mailTemplate(data)
 		});

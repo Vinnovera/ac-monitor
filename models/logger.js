@@ -2,24 +2,28 @@ module.exports = function(id) {
 	var publ    = this,
 		priv    = {},
 
-		GoogleSpreadsheet   = require('google-spreadsheet'),
-		dataSheet           = new GoogleSpreadsheet('0AgcfCX32-QOidGNCUU93aUJJeFBsTHMtY01ZaXN0WGc'),
+        config  = require(process.cwd() + '/config.js'),
 
-		username    = 'acmonitortuna@gmail.com',
-		password    = 'tunamonitor',
+		Spreadsheet = require('google-spreadsheet'),
+		dataSheet   = new Spreadsheet(config.logSpreadsheet),
+
+        username    = config.googleCredentials.username,
+		password    = config.googleCredentials.password,
 		isLoggedIn  = false,
 
-		maxEntries  = 2016; // 7 days at 5 minute interval
+		maxEntries  = config.maxLogEntries;
 
-	publ.log = function(data) {
+	publ.log = function(data, callback) {
+	    callback = callback || function() {};
+	    
 		priv.logIn(function() {
 			dataSheet.getInfo( function( err, sheetInfo ){
 				if(err)console.log(err);
 				if(typeof sheetInfo.worksheets[1] !== 'undefined') {
 					sheetInfo.worksheets[1].addRow({
 						date:     data.date,
-						inside:   data.inside.toString().replace('.',','), // Swedish spreadsheet
-						outside:  data.outside.toString().replace('.',',') // Swedish spreadsheet
+						inside:   data.inside.toString().replace('.',   config.logDecimalPoint),
+						outside:  data.outside.toString().replace('.',  config.logDecimalPoint)
 					});
 
 					if (sheetInfo.worksheets[1].rowCount > maxEntries) {
@@ -28,7 +32,7 @@ module.exports = function(id) {
 							{
 								'start-index': 1,
 								'max-results': sheetInfo.worksheets[1].rowCount - maxEntries
-						    },
+                            },
 							function(err, rows) {
 								for (var i in rows) {
 									rows[i].del();
@@ -36,6 +40,8 @@ module.exports = function(id) {
 							}
 						);
 					}
+					
+					callback();
 				}
 			});
 		});

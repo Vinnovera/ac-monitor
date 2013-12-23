@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Värmepumpen</title>
+    <meta http-equiv="refresh" content="{{refresh}}">
+    <title>{{texts.heading}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -40,23 +41,23 @@
 <body>
     <div class="container">
         <form role="form">
-            <h2>Värmepumpsläge</h2>
+            <h2>{{texts.heading}}</h2>
             <div class="btn-block">
-                <a href="/ac/sleep" class="btn btn-lg btn-primary btn-block">Aktivera 10° (iSave)</a>
-                <a href="/ac/wakeup" class="btn btn-lg btn-danger btn-block">Aktivera 22°</a>
+                <a href="/ac/sleep" class="btn btn-lg btn-primary btn-block">{{texts.buttonSleep}}</a>
+                <a href="/ac/wakeup" class="btn btn-lg btn-danger btn-block">{{texts.buttonWakeUp}}</a>
             </div>
             <div class="row">
               <div class="col-xs-6">
-                  <h3>Inne</h3>
+                  <h3>{{texts.inside}}</h3>
                   <p class="temperature text-danger">{{tempInside}}°</p>
               </div>
               <div class="col-xs-6">
-                  <h3>Ute</h3>
+                  <h3>{{texts.outside}}</h3>
                   <p class="temperature text-info">{{tempOutside}}°</p>
               </div>
             </div>
         </form>
-        <img src="//docs.google.com/a/vinnovera.se/spreadsheet/oimg?key=0AgcfCX32-QOidGNCUU93aUJJeFBsTHMtY01ZaXN0WGc&oid=1&zx=7bl1iojhs8mz" />
+        <img src="{{logChartImage}}" />
     </div>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script type="text/javascript">
@@ -65,7 +66,7 @@
                 e.preventDefault();
                 var $this = $(this);
                 $.post($this.attr('href'), function() {
-                    alert('"' + $this.text() + '" skickat!');
+                    alert('"' + $this.text() + '" {{texts.sent}}');
                 })
             })
         });

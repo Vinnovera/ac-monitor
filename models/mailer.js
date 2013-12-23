@@ -2,13 +2,15 @@ module.exports = function() {
 	var publ    = this,
 		priv    = {},
 
-		mailer          = require('nodemailer'),
+        config  = require(process.cwd() + '/config.js'),
 
-		username        = 'acmonitortuna@gmail.com',
-		password        = 'tunamonitor',
+		mailer  = require('nodemailer'),
+
+        username    = config.googleCredentials.username,
+		password    = config.googleCredentials.password,
 
 		smtpTransport   = mailer.createTransport('SMTP', {
-	        service: 'Gmail',
+            service: 'Gmail',
 			auth: {
 				user: username,
 				pass: password
@@ -18,8 +20,6 @@ module.exports = function() {
 	publ.send = function(options, callback) {
 		options     = options || {};
 		callback    = callback || function() {};
-
-		options.from = 'Tuna <acmonitortuna@gmail.com>';
 
 		smtpTransport.sendMail(options, callback);
 	};
