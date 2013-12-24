@@ -2,7 +2,7 @@ module.exports = new function() {
 	var publ    = this,
 		priv    = {},
 
-        config          = require(process.cwd() + '/config.js'),
+		config          = require(process.cwd() + '/config.js'),
 
 		fs              = require('fs'),
 		moment          = require('moment'),
@@ -78,7 +78,7 @@ module.exports = new function() {
 
 	priv.mail = function(data) {
 		mailer.send({
-            from:       alarmFrom,
+			from:       alarmFrom,
 			to:         alarmEmails,
 			subject:    alarmSubject,
 			html:       mailTemplate(data)

@@ -2,20 +2,20 @@ module.exports = function(id) {
 	var publ    = this,
 		priv    = {},
 
-        config  = require(process.cwd() + '/config.js'),
+		config  = require(process.cwd() + '/config.js'),
 
 		Spreadsheet = require('google-spreadsheet'),
 		dataSheet   = new Spreadsheet(config.logSpreadsheet),
 
-        username    = config.googleCredentials.username,
+		username    = config.googleCredentials.username,
 		password    = config.googleCredentials.password,
 		isLoggedIn  = false,
 
 		maxEntries  = config.maxLogEntries;
 
 	publ.log = function(data, callback) {
-	    callback = callback || function() {};
-	    
+		callback = callback || function() {};
+
 		priv.logIn(function() {
 			dataSheet.getInfo( function( err, sheetInfo ){
 				if(err)console.log(err);
@@ -32,7 +32,7 @@ module.exports = function(id) {
 							{
 								'start-index': 1,
 								'max-results': sheetInfo.worksheets[1].rowCount - maxEntries
-                            },
+							},
 							function(err, rows) {
 								for (var i in rows) {
 									rows[i].del();
