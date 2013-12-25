@@ -11,7 +11,6 @@ module.exports = new function() {
 			refresh:        config.pollIntervall / 1000,
 			tempInside:     temperatures.getLast('inside').toFixed(1),
 			tempOutside:    temperatures.getLast('outside').toFixed(1),
-			logChartImage:  config.logChartImage,
 			texts:          config.texts
 		});
 	};
