@@ -8,15 +8,19 @@ module.exports = function() {
 
 	publ.fetch = function(callback) {
 		callback = callback || function() {};
-		
+
 		request(
 			{
 				url:      config.logChartImage,
-				encoding: null //Creates buffer
+				encoding: null, //Creates buffer
+				jar:      true
 			},
 			function(err, res) {
 				if (!err && res.statusCode == 200) {
 					callback(res.body);
+				}
+				else {
+					console.log(err);
 				}
 			}
 		);

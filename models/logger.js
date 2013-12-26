@@ -18,20 +18,21 @@ module.exports = function(id) {
 
 		priv.logIn(function() {
 			dataSheet.getInfo( function( err, sheetInfo ){
-				if(err)console.log(err);
-				if(typeof sheetInfo.worksheets[1] !== 'undefined') {
-					sheetInfo.worksheets[1].addRow({
+				if(err) console.log(err);
+				
+				if(typeof sheetInfo.worksheets[0] !== 'undefined') {
+					sheetInfo.worksheets[0].addRow({
 						date:     data.date,
 						inside:   data.inside.toString().replace('.',   config.logDecimalPoint),
 						outside:  data.outside.toString().replace('.',  config.logDecimalPoint)
-					});
+					}, callback);
 
-					if (sheetInfo.worksheets[1].rowCount > maxEntries) {
+					if (sheetInfo.worksheets[0].rowCount > maxEntries) {
 						// Clean up old entries
-						sheetInfo.worksheets[1].getRows({},
+						sheetInfo.worksheets[0].getRows({},
 							{
 								'start-index': 1,
-								'max-results': sheetInfo.worksheets[1].rowCount - maxEntries
+								'max-results': sheetInfo.worksheets[0].rowCount - maxEntries
 							},
 							function(err, rows) {
 								for (var i in rows) {
@@ -40,8 +41,6 @@ module.exports = function(id) {
 							}
 						);
 					}
-					
-					callback();
 				}
 			});
 		});
@@ -49,6 +48,7 @@ module.exports = function(id) {
 
 	priv.logIn = function(callback) {
 		callback = callback || function () {};
+		
 		if(!isLoggedIn) {
 			dataSheet.setAuth( username, password, function(err){
 				if (err) console.log(err);

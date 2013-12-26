@@ -9,9 +9,10 @@ module.exports = new function() {
 	publ.index = function(req, res) {
 		res.render('index', {
 			refresh:        config.pollIntervall / 1000,
+			spreadsheetKey: config.logSpreadsheet,
 			tempInside:     temperatures.getLast('inside').toFixed(1),
 			tempOutside:    temperatures.getLast('outside').toFixed(1),
-			texts:          config.texts
+			texts:          config.texts,
 		});
 	};
 }

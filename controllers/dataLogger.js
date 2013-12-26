@@ -43,7 +43,7 @@ module.exports = new function() {
 
 	priv.getTemperatures = function() {
 		temperatures.getCurrent(function(temperatures) {
-			priv.log(temperatures, priv.updateChart);
+			priv.log(temperatures);
 			priv.checkAlarms(temperatures);
 		})
 	};

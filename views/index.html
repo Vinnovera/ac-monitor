@@ -1,75 +1,163 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta http-equiv="refresh" content="{{refresh}}">
-    <title>{{texts.heading}}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="img/icon.png"/>
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+	<head>
+		<meta http-equiv="refresh" content="{{refresh}}">
+		<title>{{texts.heading}}</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<link rel="apple-touch-icon" href="img/icon.png" />
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+		<style type="text/css">
+			.container {
+				padding-bottom: 15px;
+			}
+			form, .btn-block {
+				max-width: 330px;
+				margin: 0 auto;
+			}
+			.temperature {
+				font-size: 60px;
+			}
+			img {
+				display: block;
+				max-width: 100%;
+				margin: 0 auto;
+			}
+			
+		</style>
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and
+		media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file://
+		-->
+		<!--[if lt IE 9]>
+			<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="container">
+			<form role="form">
+				<div class="row">
+					<div class="col-xs-6">
+						<h2>{{texts.inside}}</h2>
+						<p class="temperature text-danger">{{tempInside}}°</p>
+					</div>
+					<div class="col-xs-6">
+						<h2>{{texts.outside}}</h2>
+						<p class="temperature text-info">{{tempOutside}}°</p>
+					</div>
+				</div>
+			</form>
+			<script type="text/javascript" src="//ajax.googleapis.com/ajax/static/modules/gviz/1.0/chart.js">
+				{
+					"dataSourceUrl": "//docs.google.com/spreadsheet/tq?key={{spreadsheetKey}}&transpose=0&headers=1&range=A1%3AC&gid=2&pub=1",
+					"options": {
+						"titleTextStyle": {
+							"bold": true,
+							"color": "#000",
+							"fontSize": 16
+						},
+						"series": {
+							"0": {
+								"color": "#dc3912"
+							},
+							"1": {
+								"errorBars": {
+									"errorType": "none",
+									"magnitude": 1
+								},
+								"color": "#3366cc",
+								"pointSize": 0,
+								"targetAxisIndex": 0,
+								"lineWidth": 1
+							}
+						},
+						"curveType": "",
+						"animation": {
+							"duration": 0
+						},
+						"width": null,
+						"theme": "maximized",
+						"lineWidth": 1,
+						"hAxis": {
+							"useFormatFromData": true,
+							"title": "",
+							"minValue": null,
+							"viewWindowMode": null,
+							"viewWindow": null,
+							"maxValue": null
+						},
+						"vAxes": [{
+							"useFormatFromData": false,
+							"title": "",
+							"minorGridlines": {
+								"count": "4"
+							},
+							"formatOptions": {
+								"source": "inline",
+								"prefix": "",
+								"suffix": "hej"
+							},
+							"minValue": null,
+							"format": "0.##°",
+							"gridlines": {
+								"count": "5"
+							},
+							"viewWindow": {
+								"min": null,
+								"max": null
+							},
+							"maxValue": null
+						}, {
+							"useFormatFromData": true,
+							"minValue": null,
+							"viewWindow": {
+								"min": null,
+								"max": null
+							},
+							"maxValue": null
+						}],
+						"booleanRole": "certainty",
+						"title": "",
+						"height": 300,
+						"interpolateNulls": false,
+						"domainAxis": {
+							"direction": 1
+						},
+						"legend": "none",
+						"focusTarget": "series",
+						"tooltip": {
+							"trigger": "none"
+						}
+					},
+					"state": {},
+					"view": {},
+					"isDefaultVisualization": false,
+					"chartType": "LineChart",
+					"chartName": "Chart 1"
+				}
+			</script>
+			<div class="btn-block">
+				<h2>{{texts.heading}}</h2>
+				<a href="/ac/sleep" class="btn btn-lg btn-primary btn-block">{{texts.buttonSleep}}</a>
+				<a href="/ac/wakeup" class="btn btn-lg btn-danger btn-block">{{texts.buttonWakeUp}}</a>
+			</div>
+		</div>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$('.btn').on('click', function(e) {
+					e.preventDefault();
+					var $this = $(this);
+					$.post($this.attr('href'), function() {
+						alert('"' + $this.text() + '" {{texts.sent}}');
+					})
+				});
+				$(window).on('resize orientationchange', function() { window.location = window.location });
+			});
+		</script>
+	</body>
 
-    <style type="text/css">
-        .container {
-            padding-bottom: 15px;
-        }
-
-        form {
-          max-width: 330px;
-          margin: 0 auto;
-        }
-
-        .temperature {
-            font-size: 60px;
-        }
-
-        img {
-            display: block;
-            max-width: 100%;
-            margin: 0 auto;
-        }
-    </style>
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
-</head>
-<body>
-    <div class="container">
-        <form role="form">
-            <h2>{{texts.heading}}</h2>
-            <div class="btn-block">
-                <a href="/ac/sleep" class="btn btn-lg btn-primary btn-block">{{texts.buttonSleep}}</a>
-                <a href="/ac/wakeup" class="btn btn-lg btn-danger btn-block">{{texts.buttonWakeUp}}</a>
-            </div>
-            <div class="row">
-              <div class="col-xs-6">
-                  <h3>{{texts.inside}}</h3>
-                  <p class="temperature text-danger">{{tempInside}}°</p>
-              </div>
-              <div class="col-xs-6">
-                  <h3>{{texts.outside}}</h3>
-                  <p class="temperature text-info">{{tempOutside}}°</p>
-              </div>
-            </div>
-        </form>
-        <img src="/img/chart.png" />
-    </div>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script type="text/javascript">
-        $(function() {
-            $('.btn').on('click', function(e) {
-                e.preventDefault();
-                var $this = $(this);
-                $.post($this.attr('href'), function() {
-                    alert('"' + $this.text() + '" {{texts.sent}}');
-                })
-            })
-        });
-    </script>
-</body>
 </html>
