@@ -208,8 +208,8 @@
 			$(function() {
 				$('.btn').on('click', function(e) {
 					e.preventDefault();
+					var $this = $(this);
 					if (confirm('{{texts.send}} "' + $this.text() + '"?')) {
-						var $this = $(this);
 						$.post($this.attr('href'), function() {
 							alert('"' + $this.text() + '" {{texts.sent}}');
 						})
