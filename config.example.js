@@ -30,6 +30,7 @@ module.exports = {
 		buttonWakeUp: 'Wake up',
 		inside:       'Inside',
 		outside:      'Outside',
+		send:         'Are you sure you want to',
 		sent:         'sent!',
 		alarmSubject: 'Temperature alarm',
 		alarmMessage: '<h1>Temperature alarm</h1>\n' + 

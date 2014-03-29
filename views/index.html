@@ -208,10 +208,12 @@
 			$(function() {
 				$('.btn').on('click', function(e) {
 					e.preventDefault();
-					var $this = $(this);
-					$.post($this.attr('href'), function() {
-						alert('"' + $this.text() + '" {{texts.sent}}');
-					})
+					if (confirm('{{texts.send}} "' + $this.text() + '"?')) {
+						var $this = $(this);
+						$.post($this.attr('href'), function() {
+							alert('"' + $this.text() + '" {{texts.sent}}');
+						})
+					}
 				});
 				$(window).on('orientationchange', function() { window.location = window.location });
 			});
