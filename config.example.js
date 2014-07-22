@@ -6,6 +6,12 @@ module.exports = {
 		password: 'somepassword'
 	},
 
+	xivelyCredentials: {
+		apiVer: '1.0.0',
+		apiKey: 'KEY',
+		feedId: 'ID'
+	},
+
 	remote: 'AC',
 	sensors: {
 		inside:  '28-000005494d43',

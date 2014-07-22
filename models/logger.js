@@ -4,19 +4,44 @@ module.exports = function(id) {
 
 		config  = require(process.cwd() + '/config.js'),
 
-		Spreadsheet = require('google-spreadsheet'),
-		dataSheet   = new Spreadsheet(config.logSpreadsheet),
+		Spreadsheet     = require('google-spreadsheet'),
+		dataSheet       = new Spreadsheet(config.logSpreadsheet),
 
-		username    = config.googleCredentials.username,
-		password    = config.googleCredentials.password,
-		isLoggedIn  = false,
+		username        = config.googleCredentials.username,
+		password        = config.googleCredentials.password,
 
-		maxEntries  = config.maxLogEntries;
+		XivelyClient    = require('xively'),
+		xively          = new XivelyClient(),
+
+		apiVer          = config.xivelyCredentials.apiVer,
+		apiKey          = config.xivelyCredentials.apiKey,
+		feedId          = config.xivelyCredentials.feedId,
+
+		isLoggedIn      = false,
+
+		maxEntries      = config.maxLogEntries;
 
 	publ.log = function(data, callback) {
 		callback = callback || function() {};
 
 		priv.logIn(function() {
+			xively.feed.new(feedId, {
+				data_point: {
+					'version': apiVer,
+					'datastreams': [
+						{
+							'id':               'inside',
+							'current_value':    data.inside
+						},
+						{
+							'id':               'outside',
+							'current_value':    data.outside
+						}
+
+					]
+				}
+			});
+
 			dataSheet.getInfo( function( err, sheetInfo ){
 				if(err) console.log(err);
 				
@@ -50,6 +75,8 @@ module.exports = function(id) {
 		callback = callback || function () {};
 		
 		if(!isLoggedIn) {
+			xively.setKey(apiKey);
+
 			dataSheet.setAuth( username, password, function(err){
 				if (err) console.log(err);
 

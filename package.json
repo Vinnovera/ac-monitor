@@ -4,15 +4,16 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
-    "google-spreadsheet": "~0.2.6",
     "async": "~0.2.9",
     "consolidate": "~0.10.0",
     "express": "~3.4.7",
+    "google-spreadsheet": "~0.2.6",
     "handlebars": "~1.1.2",
-    "moment": "~2.4.0",
     "lirc_node": "~0.0.1",
+    "moment": "~2.4.0",
     "nodemailer": "~0.5.15",
-    "request": "~2.30.0"
+    "request": "~2.30.0",
+    "xively": "0.0.1"
   },
   "devDependencies": {},
   "scripts": {
