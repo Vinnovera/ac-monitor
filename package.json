@@ -7,12 +7,11 @@
     "async": "~0.2.9",
     "consolidate": "~0.10.0",
     "express": "~3.4.7",
-    "google-spreadsheet": "~0.2.6",
     "handlebars": "~1.1.2",
     "lirc_node": "~0.0.1",
-    "moment": "~2.4.0",
     "nodemailer": "~0.5.15",
     "request": "~2.30.0",
+    "telldus": "0.0.9",
     "xively": "0.0.1"
   },
   "devDependencies": {},
