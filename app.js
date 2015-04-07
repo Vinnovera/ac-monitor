@@ -4,15 +4,13 @@ var express         = require('express'),
 	
 	config          = require(process.cwd() + '/config.js'),
 
-	temperatures    = require(process.cwd() + '/facades/temperatures.js'),
+	sensors         = require(process.cwd() + '/facades/sensors.js'),
 
 	dataLogger      = require(process.cwd() + '/controllers/dataLogger.js'),
 	start           = require(process.cwd() + '/controllers/start'),
-	ac              = require(process.cwd() + '/controllers/ac');
+	command         = require(process.cwd() + '/controllers/command');
 
-temperatures
-	.registerSensor(config.sensors.outside, 'outside')
-	.registerSensor(config.sensors.inside,  'inside');
+sensors.registerSensors(config.sensors);
 
 dataLogger.start();
 
@@ -24,9 +22,9 @@ app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
 
 //controllers
-app.get('/',            start.index);
-app.post('/ac/sleep',   ac.sleep);
-app.post('/ac/wakeup',  ac.wakeup);
+app.get('/',                 start.index);
+app.get('/command/ir',       command.ir);
+app.get('/command/telldus',  command.telldus);
 
 app.use(express.static(__dirname + '/public'));
 

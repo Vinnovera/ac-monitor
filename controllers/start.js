@@ -2,17 +2,17 @@ module.exports = new function() {
 	var publ    = this,
 		priv    = {},
 
-		config          = require(process.cwd() + '/config.js'),
+		config  = require(process.cwd() + '/config.js'),
 
-		temperatures    = require(process.cwd() + '/facades/temperatures.js');
+		sensors = require(process.cwd() + '/facades/sensors.js');
 
 	publ.index = function(req, res) {
 		res.render('index', {
 			refresh:        config.pollIntervall / 1000,
-			spreadsheetKey: config.logSpreadsheet,
-			tempInside:     temperatures.getLast('inside').toFixed(1),
-			tempOutside:    temperatures.getLast('outside').toFixed(1),
-			texts:          config.texts,
+			xively:         config.xivelyCredentials,
+			sensors:        sensors.getDetailedLast(null, 1),
+			commands:       config.commands,
+			texts:          config.texts
 		});
 	};
 }
