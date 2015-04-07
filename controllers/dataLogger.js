@@ -5,8 +5,7 @@ module.exports = new function() {
 		config          = require(process.cwd() + '/config.js'),
 
 		fs              = require('fs'),
-		moment          = require('moment'),
-		temperatures    = require(process.cwd() + '/facades/temperatures.js'),
+		temperatures    = require(process.cwd() + '/facades/sensors.js'),
 		Logger          = require(process.cwd() + '/models/logger.js'),
 		Mailer          = require(process.cwd() + '/models/mailer.js'),
 		Chart           = require(process.cwd() + '/models/chart.js'),
@@ -22,7 +21,8 @@ module.exports = new function() {
 
 		alarmSubject    = config.texts.alarmSubject,
 		alarmMessage    = config.texts.alarmMessage,
-		
+
+		alarmSensor     = config.alarms.sensor,
 		alarmEmails     = config.alarms.emailRecipients.join(','),
 		alarmFrom       = config.alarms.emailFrom,
 		alarms          = config.alarms.steps,
@@ -50,42 +50,39 @@ module.exports = new function() {
 
 	priv.log = function(temperatures, callback) {
 		callback = callback || function() {};
-		
-		var now = moment();
-		logger.log({
-			date:       now.format('YYYY-MM-DD HH.mm.ss'),
-			inside:     temperatures.inside,
-			outside:    temperatures.outside
-		}, callback);
+
+		logger.log(temperatures, callback);
 	};
 
 	priv.checkAlarms = function(temperatures) {
-		var temperature = temperatures.inside;
+		var temperature = temperatures[alarmSensor];
 
-		if (lastAlarm === null) lastAlarm = temperature;
+		if (typeof temperature === 'number') {
+			if (lastAlarm === null) lastAlarm = temperature;
 
-		alarms.forEach(function(alarm) {
-			if (alarm > temperature && alarm < lastAlarm) {
-				// alarm is below last alarm
-				priv.mail({
-					below: true,
-					alarm: alarm,
-					temperature: temperature.toFixed(1)
-				});
+			alarms.forEach(function(alarm) {
+				if (alarm > temperature && alarm < lastAlarm) {
+					// alarm is below last alarm
+					priv.mail({
+						below: true,
+						alarm: alarm,
+						temperature: temperature.toFixed(1)
+					});
 
-				lastAlarm = temperature;
-			}
-			else if (alarm < temperature && alarm > lastAlarm) {
-				// alarm is above last alarm
-				priv.mail({
-					above: true,
-					alarm: alarm,
-					temperature: temperature.toFixed(1)
-				});
+					lastAlarm = temperature;
+				}
+				else if (alarm < temperature && alarm > lastAlarm) {
+					// alarm is above last alarm
+					priv.mail({
+						above: true,
+						alarm: alarm,
+						temperature: temperature.toFixed(1)
+					});
 
-				lastAlarm = temperature;
-			}
-		});
+					lastAlarm = temperature;
+				}
+			});
+		}
 	};
 
 	priv.mail = function(data) {
