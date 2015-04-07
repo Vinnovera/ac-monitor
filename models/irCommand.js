@@ -10,18 +10,9 @@ module.exports = function() {
 
 	lirc.init();
 
-	publ.wakeup = function(callback) {
-		priv.send('KEY_WAKEUP', callback);
-	}
-
-	publ.sleep = function(callback) {
-		priv.send('KEY_SLEEP', callback);
-
-	}
-
-	priv.send = function(key, callback) {
+	publ.send = function(command, callback) {
 		callback = callback || function() {};
-		lirc.irsend.send_once(remote, key, callback);
+		lirc.irsend.send_once(remote, command, callback);
 	}
 
 };
