@@ -5,7 +5,7 @@ module.exports = new function() {
 		config          = require(process.cwd() + '/config.js'),
 
 		fs              = require('fs'),
-		temperatures    = require(process.cwd() + '/facades/sensors.js'),
+		sensors         = require(process.cwd() + '/facades/sensors.js'),
 		Logger          = require(process.cwd() + '/models/logger.js'),
 		Mailer          = require(process.cwd() + '/models/mailer.js'),
 		Chart           = require(process.cwd() + '/models/chart.js'),
@@ -42,9 +42,9 @@ module.exports = new function() {
 	};
 
 	priv.getTemperatures = function() {
-		temperatures.getCurrent(function(temperatures) {
-			priv.log(temperatures);
-			priv.checkAlarms(temperatures);
+		sensors.getDetailedCurrent(function(sensors) {
+			priv.log(sensors);
+			priv.checkAlarms(sensors);
 		})
 	};
 
