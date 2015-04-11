@@ -2,7 +2,9 @@ module.exports = new function() {
 	var publ    = this,
 		priv    = {},
 
-		ir      = new (require(process.cwd() + '/models/irCommand.js')),
+		config  = require(process.cwd() + '/config.js'),
+
+		ir      = new (require(process.cwd() + '/models/irCommand.js'))(config.remote),
 		telldus = new (require(process.cwd() + '/models/telldusCommand.js'));
 
 	publ.ir = function(req, res) {
