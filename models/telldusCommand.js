@@ -4,14 +4,14 @@ module.exports = function() {
 
 		telldus = require('telldus');
 
-	publ.send = function(command, state, callback) {
+	publ.send = function(id, state, callback) {
 		callback = callback || function() {};
 
 		if (state === 'on') {
-			telldus.turnOn(command, callback);
+			telldus.turnOn(id, callback);
 		}
 		else {
-			telldus.turnOff(command, callback);
+			telldus.turnOff(id, callback);
 		}
 	}
 };
