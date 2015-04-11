@@ -137,26 +137,28 @@
 			$(window).on('orientationchange', function() { window.location = window.location });
 
 			var deferedReqs = [],
-				colors     = {};
+				sensors     = {};
+
 			{{#each sensors}}
-				deferedReqs.push($.getJSON('http://api.xively.com/v2/feeds/{{../xively.feedId}}/datastreams/{{name}}.json?duration=1week&interval=420&limit=1000&key={{../xively.apiKey}}'));
-				colors['{{name}}'] = '{{color}}';
+				deferedReqs.push($.getJSON('http://api.xively.com/v2/feeds/{{../xively.feedId}}/datastreams/{{logName}}.json?duration=1week&interval=420&limit=1000&key={{../xively.apiKey}}'));
+				sensors['{{logName}}'] = {
+					name:  '{{name}}',
+					color: '{{color}}'
+				};
 			{{/each}}
 
 			$.when.apply($, deferedReqs).then(function() {
 				var dataseries = [];
 
 				for (var x = 0; x < arguments.length; x++) {
-					var stream = arguments[x][0],
-						datapoints = stream.datapoints,
-						serie = {
-							type: 'line',
-							name: stream.id,
-							tooltip: {
-								valueDecimals: 2
-							},
-							color: colors[stream.id],
-							data: []
+					var stream      = arguments[x][0],
+						sensor      = sensors[stream.id],
+						datapoints  = stream.datapoints,
+						serie       = {
+							type:   'line',
+							name:   sensor.name,
+							color:  sensor.color,
+							data:   []
 						};
 
 					if (datapoints) {
@@ -171,16 +173,26 @@
 					dataseries.push(serie);
 				}
 
+				Highcharts.setOptions({
+					global: {
+						useUTC: false
+					}
+				});
 
 				$('#chart').highcharts({
 					chart: {
-						zoomType: 'x',
 						spacingLeft: 0,
 						spacingRight: 0,
 						spacingTop: 20
 					},
 					title: {
 						text: ''
+					},
+					tooltip: {
+						shared: true,
+						followTouchMove: false,
+						valueDecimals: 1,
+						valueSuffix: '°'
 					},
 					xAxis: {
 						type: 'datetime',
@@ -217,7 +229,9 @@
 							lineWidth: 1,
 							states: {
 								hover: {
-									lineWidth: 1
+									lineWidth: 1,
+									lineWidthPlus: 0,
+									halo: false
 								}
 							},
 							threshold: null
