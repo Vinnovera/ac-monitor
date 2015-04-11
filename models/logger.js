@@ -21,8 +21,8 @@ module.exports = function(id) {
 		for (var key in data) {
 			if (data.hasOwnProperty(key)) {
 				datastreams.push({
-					id:             key,
-					current_value:  data[key]
+					id:             data[key].logName,
+					current_value:  data[key].value
 				})
 			}
 		}
