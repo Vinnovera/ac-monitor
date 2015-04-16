@@ -18,7 +18,7 @@ module.exports = new function() {
 				type:    type,
 				color:   color,
 				logName: logName,
-				last:    0,
+				last:    null,
 				date:    null
 			};
 
@@ -46,13 +46,21 @@ module.exports = new function() {
 	publ.getLast = function(name, digits) {
 		digits = typeof digits === 'number' ? digits : 20;
 
-		if (name && sensors.hasOwnProperty(name)) {
-			return sensors[name].last.toFixed(digits)
+		var sensor,
+			ret = {}
+
+		if (name) {
+			if (sensors.hasOwnProperty(name) && typeof sensors[name].last  === 'number') {
+				return sensors[name].last.toFixed(digits)
+			}
+
+			return false;
 		}
 
-		var ret = {};
 		for (var name in sensors) {
-			ret[name] = sensors[name].last.toFixed(digits)
+			if (sensors.hasOwnProperty(name) && typeof sensors[name].last  === 'number') {
+				ret[name] = sensors[name].last.toFixed(digits)
+			}
 		}
 		return ret;
 	};
@@ -63,28 +71,38 @@ module.exports = new function() {
 		var sensor,
 			ret = []
 
-		if (name && sensors.hasOwnProperty(name)) {
-			sensor = sensors[name];
-			return {
-				name:    name,
-				id:      sensor.id,
-				type:    sensor.type,
-				logName: sensor.logName,
-				color:   sensor.color,
-				value:   sensor.last.toFixed(digits)
-			};
+		if (name) {
+			if (sensors.hasOwnProperty(name) && typeof sensors[name].last  === 'number') {
+				sensor = sensors[name];
+
+				return {
+					name:    name,
+					id:      sensor.id,
+					type:    sensor.type,
+					logName: sensor.logName,
+					color:   sensor.color,
+					value:   sensor.last.toFixed(digits)
+				};
+			}
+
+			return false;
 		}
 
 		for (var name in sensors) {
-			sensor = sensors[name];
-			ret.push({
-				name:    name,
-				id:      sensor.id,
-				type:    sensor.type,
-				logName: sensor.logName,
-				color:   sensor.color,
-				value:   sensor.last.toFixed(digits)
-			});
+			if (sensors.hasOwnProperty(name) && typeof sensors[name].last  === 'number') {
+				sensor = sensors[name];
+
+				if (typeof sensor.last === 'number') {
+					ret.push({
+						name: name,
+						id: sensor.id,
+						type: sensor.type,
+						logName: sensor.logName,
+						color: sensor.color,
+						value: sensor.last.toFixed(digits)
+					});
+				}
+			}
 		}
 		return ret;
 	}

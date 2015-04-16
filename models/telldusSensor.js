@@ -22,7 +22,7 @@ module.exports = function(id) {
 		priv    = {},
 
 		lastTimestamp   = new Date(),
-		lastValue       = 0;
+		lastValue       = null;
 
 	telldus.addSensorCallback(function(deviceId, protocol, model, type, value, timestamp) {
 		if (deviceId === id && type === 1) {
