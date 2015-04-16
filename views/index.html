@@ -83,24 +83,35 @@
 				padding: 10px 0;
 				font-size: 18px;
 				line-height: 1.33;
+				color: #fff;
 				border-radius: 6px;
 				text-align:center;
 				text-decoration: none;
 				box-sizing: border-box;
 			}
-			.btn.off {
-				width: 49%;
-				clear: right;
-				float: right;
-				color: #fff;
-				background-color: #428bca;
-			}
-			.btn.on {
+			.btn:nth-child(even) {
 				width: 49%;
 				clear: left;
 				float: left;
-				color: #fff;
+			}
+			.btn:nth-child(odd) {
+				width: 49%;
+				clear: right;
+				float: right;
+			}
+			.btn:nth-child(even):last-child {
+				clear: both;
+				float: none;
+				width: auto;
+			}
+			.btn.on {
 				background-color: #d9534f;
+			}
+			.btn.off {
+				background-color: #428bca;
+			}
+			.btn.normal {
+				background-color: #656d78;
 			}
 		</style>
 	</head>
