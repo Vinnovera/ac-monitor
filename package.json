@@ -9,6 +9,7 @@
     "express": "~3.4.7",
     "handlebars": "~1.1.2",
     "lirc_node": "~0.0.1",
+    "node-pid-controller": "0.0.3",
     "nodemailer": "~0.5.15",
     "request": "~2.30.0",
     "telldus": "0.0.9",
