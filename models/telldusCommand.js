@@ -1,6 +1,6 @@
 module.exports = function() {
 	var publ    = this,
-		priv    = {};
+		priv    = {},
 
 		telldus = require('telldus');
 
