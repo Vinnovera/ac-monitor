@@ -17,7 +17,7 @@ module.exports = {
 		{ name: 'inside',   type: '1wire', id: '28-000005494d43' },
 		{ name: 'outside',  type: '1wire', id: '28-0000052112e9' }
 	],
-	pollIntervall:   300000, // 5 minute interval
+	pollInterval:   300000, // 5 minute interval
 
 	commands: [
 		{

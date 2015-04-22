@@ -8,7 +8,7 @@ module.exports = new function() {
 
 	publ.index = function(req, res) {
 		res.render('index', {
-			refresh:        config.pollIntervall / 1000,
+			refresh:        config.pollInterval / 1000,
 			xively:         config.xivelyCredentials,
 			sensors:        sensors.getDetailedLast(null, 1),
 			commands:       config.commands,
