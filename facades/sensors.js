@@ -3,14 +3,42 @@ module.exports = new function() {
 		priv    = {},
 
 		async   = require('async'),
+		emitter = new (require('events').EventEmitter),
+
+		config  = require(process.cwd() + '/config.js'),
+
 		libs    = {
 			'1wire':    require(process.cwd() + '/models/oneWireSensor.js'),
 			'telldus':  require(process.cwd() + '/models/telldusSensor.js')
 		},
 
-		sensors = {};
+		sensors = {},
 
-	publ.registerSensor = function(id, type, name, color, logName) {
+		interval    = config.pollInterval,
+		timer       = null;
+
+	publ.start = function() {
+		if (timer) {
+			clearInterval(timer);
+		}
+
+		timer = setInterval(priv.poll, interval);
+		priv.poll();
+	}
+
+	priv.poll = function() {
+		publ.getDetailedCurrent(function(sensors) {
+			emitter.emit('read', sensors);
+		})
+	};
+
+	publ.addListener = function(callback) {
+		callback = callback || function() {};
+
+		emitter.addListener('read', callback);
+	};
+
+	publ.addSensor = function(id, type, name, color, logName) {
 		if (libs.hasOwnProperty(type)) {
 			sensors[name] = {
 				id:      id,
@@ -28,11 +56,11 @@ module.exports = new function() {
 		return this;
 	};
 
-	publ.registerSensors = function(sensors) {
+	publ.addSensors = function(sensors) {
 		sensors = sensors || [];
 
 		sensors.forEach(function(sensor) {
-			publ.registerSensor(sensor.id, sensor.type, sensor.name, sensor.color, sensor.logName);
+			publ.addSensor(sensor.id, sensor.type, sensor.name, sensor.color, sensor.logName);
 		})
 	};
 
@@ -51,7 +79,7 @@ module.exports = new function() {
 
 		if (name) {
 			if (sensors.hasOwnProperty(name) && typeof sensors[name].last  === 'number') {
-				return sensors[name].last.toFixed(digits)
+				return parseFloat(sensors[name].last.toFixed(digits))
 			}
 
 			return false;
@@ -59,7 +87,7 @@ module.exports = new function() {
 
 		for (var name in sensors) {
 			if (sensors.hasOwnProperty(name) && typeof sensors[name].last  === 'number') {
-				ret[name] = sensors[name].last.toFixed(digits)
+				ret[name] = parseFloat(sensors[name].last.toFixed(digits))
 			}
 		}
 		return ret;
@@ -81,7 +109,7 @@ module.exports = new function() {
 					type:    sensor.type,
 					logName: sensor.logName,
 					color:   sensor.color,
-					value:   sensor.last.toFixed(digits)
+					value:   parseFloat(sensor.last.toFixed(digits))
 				};
 			}
 
@@ -99,7 +127,7 @@ module.exports = new function() {
 						type: sensor.type,
 						logName: sensor.logName,
 						color: sensor.color,
-						value: sensor.last.toFixed(digits)
+						value: parseFloat(sensor.last.toFixed(digits))
 					});
 				}
 			}

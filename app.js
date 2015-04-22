@@ -10,9 +10,10 @@ var express         = require('express'),
 	start           = require(process.cwd() + '/controllers/start'),
 	command         = require(process.cwd() + '/controllers/command');
 
-sensors.registerSensors(config.sensors);
-
 dataLogger.start();
+
+sensors.addSensors(config.sensors);
+sensors.start();
 
 app.use(express.bodyParser());
 
@@ -22,9 +23,10 @@ app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
 
 //controllers
-app.get('/',                 start.index);
-app.get('/command/ir',       command.ir);
-app.get('/command/telldus',  command.telldus);
+app.get('/',                    start.index);
+app.get('/command/ir',          command.ir);
+app.get('/command/telldus',     command.telldus);
+app.get('/command/telldusPID',  command.telldusPID);
 
 app.use(express.static(__dirname + '/public'));
 

@@ -4,20 +4,9 @@ module.exports = new function() {
 
 		config          = require(process.cwd() + '/config.js'),
 
-		fs              = require('fs'),
 		sensors         = require(process.cwd() + '/facades/sensors.js'),
-		Logger          = require(process.cwd() + '/models/logger.js'),
-		Mailer          = require(process.cwd() + '/models/mailer.js'),
-		Chart           = require(process.cwd() + '/models/chart.js'),
-		logger          = new Logger,
-		mailer          = new Mailer,
-		chart           = new Chart,
-
-		interval        = config.pollIntervall,
-		timer           = null,
-		
-		minChartSize    = 2000,
-		chartImageFile  = process.cwd() + '/public/img/chart.png',
+		logger          = new (require(process.cwd() + '/models/logger.js')),
+		mailer          = new (require(process.cwd() + '/models/mailer.js')),
 
 		alarmSubject    = config.texts.alarmSubject,
 		alarmMessage    = config.texts.alarmMessage,
@@ -31,21 +20,11 @@ module.exports = new function() {
 		handlebars      = require('handlebars'),
 		mailTemplate    = handlebars.compile(alarmMessage);
 
-
 	publ.start = function() {
-		if (timer) {
-			clearInterval(timer);
-		}
-
-		timer = setInterval(priv.getTemperatures, interval);
-		priv.getTemperatures();
-	};
-
-	priv.getTemperatures = function() {
-		sensors.getDetailedCurrent(function(sensors) {
-			priv.log(sensors);
-			priv.checkAlarms(sensors);
-		})
+		sensors.addListener(function(temperatures) {
+			priv.log(temperatures);
+			priv.checkAlarms(temperatures);
+		});
 	};
 
 	priv.log = function(temperatures, callback) {
@@ -93,16 +72,4 @@ module.exports = new function() {
 			html:       mailTemplate(data)
 		});
 	};
-	
-	priv.updateChart = function() {
-		chart.fetch(function(image) {
-			if (image.length >= minChartSize) {
-				priv.saveChart(image);
-			}
-		});
-	};
-	
-	priv.saveChart = function(image) {
-		fs.writeFile(chartImageFile, image, { encoding: 'binary' });
-	}
 }
