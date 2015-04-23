@@ -6,11 +6,11 @@ module.exports = function(pId, pSensor) {
 		sensors     = require(process.cwd() + '/facades/sensors.js'),
 		Controller  = require('node-pid-controller'),
 
-		id          = parseInt(id),
+		id          = parseInt(pId),
 		sensor      = pSensor,
 		enabled     = false,
 		state       = 'off',
-		controller  = new Controller(0.01, 0.01, 0.01),
+		controller  = new Controller(1.0, 0.01, 0.01),
 		target      = null;
 
 	publ.setEnabled = function(pEnabled) {
@@ -38,7 +38,7 @@ module.exports = function(pId, pSensor) {
 					telldus.turnOn(id);
 					state = 'on';
 				}
-				else if (state === 'on') {
+				else if (output <= 0 && state === 'on') {
 					console.log('turning off ' + sensor + ' value:' + input + ' target:' + target + ' output:' + output);
 					telldus.turnOff(id);
 					state = 'off';

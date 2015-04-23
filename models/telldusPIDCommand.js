@@ -20,6 +20,7 @@ module.exports = function() {
 
 		process.setEnabled(state === 'on');
 		process.setTarget(target);
+		process.update();
 
 		callback();
 	};
