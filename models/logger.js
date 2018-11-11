@@ -20,7 +20,7 @@ module.exports = function(id) {
             data[key].logName +
             "/" +
             data[key].value +
-            "?apiKey=" +
+            "?apikey=" +
             apiKey
         );
       }
