@@ -3,6 +3,7 @@ module.exports = function(id) {
     priv = {},
     config = require(process.cwd() + "/config.js"),
     email = config.pushdataCredentials.email,
+    apiKey = config.pushdataCredentials.apiKey,
     request = require("request");
 
   publ.log = function(data, callback) {
@@ -18,7 +19,9 @@ module.exports = function(id) {
             "/" +
             data[key].logName +
             "/" +
-            data[key].value
+            data[key].value +
+            "?apiKey=" +
+            apiKey
         );
       }
     }
