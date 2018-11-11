@@ -6,10 +6,8 @@ module.exports = {
 		password: 'somepassword'
 	},
 
-	xivelyCredentials: {
-		apiVer: '1.0.0',
-		apiKey: 'KEY',
-		feedId: 'FEED'
+	pushdataCredentials: {
+		email: 'jakob@vinnovera.se'
 	},
 
 	remote: 'AC',

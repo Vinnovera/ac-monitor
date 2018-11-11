@@ -12,8 +12,7 @@
     "node-pid-controller": "0.0.3",
     "nodemailer": "~0.5.15",
     "request": "~2.30.0",
-    "telldus": "1.1.0",
-    "xively": "0.0.1"
+    "telldus": "1.1.0"
   },
   "devDependencies": {},
   "scripts": {
